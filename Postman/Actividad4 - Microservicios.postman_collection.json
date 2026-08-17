@@ -1,0 +1,344 @@
+{
+  "info": {
+    "_postman_id": "f4dc0000-e3ff-40f4-91d3-bef5c27a5dbf",
+    "name": "Actividad4 - Microservicios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "57438032"
+  },
+  "item": [
+    {
+      "name": "Servicio A - Clientes",
+      "item": [
+        {
+          "name": "POST - Crear cliente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Carlos Gomez\",\r\n    \"correo\": \"carlos@gmail.com\",\r\n    \"telefono\": \"3001234567\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-a-clientes",
+                "index.php",
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-a-clientes",
+                "index.php",
+                "api",
+                "clientes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-a-clientes",
+                "index.php",
+                "api",
+                "clientes",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\": \"Carlos Gomez Actualizado\",\r\n    \"correo\": \"carlos.actualizado@gmail.com\",\r\n    \"telefono\": \"3009999999\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-a-clientes",
+                "index.php",
+                "api",
+                "clientes",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Eliminar cliente",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes/3",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-a-clientes",
+                "index.php",
+                "api",
+                "clientes",
+                "3"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Servicio B - Ventas",
+      "item": [
+        {
+          "name": "POST - Crear venta",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_cliente\": 2,\r\n    \"producto\": \"Taladro\",\r\n    \"cantidad\": 1,\r\n    \"precio\": 150000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Listar ventas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET - Venta por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT - Actualizar venta",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_cliente\": 2,\r\n    \"producto\": \"Taladro profesional\",\r\n    \"cantidad\": 2,\r\n    \"precio\": 180000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE - Eliminar venta",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas/8",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas",
+                "8"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Cliente inexistente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_cliente\": 9999,\r\n    \"producto\": \"Taladro\",\r\n    \"cantidad\": 1,\r\n    \"precio\": 80000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "POST - Servicio A no disponible",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id_cliente\": 2,\r\n    \"producto\": \"Taladro\",\r\n    \"cantidad\": 1,\r\n    \"precio\": 150000\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "path": [
+                "Actividad4_Microservicios",
+                "servicio-b-ventas",
+                "index.php",
+                "api",
+                "ventas"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
