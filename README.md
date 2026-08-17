@@ -1,248 +1,280 @@
-# Actividad 4 - Diseño y comunicación entre microservicios
+# StockFlow - Actividad 4
+## Diseño y comunicación entre microservicios
 
-## 1. Descripción del proyecto
+## Descripción
 
-En esta actividad se desarrollaron dos microservicios utilizando PHP y CodeIgniter 3. El objetivo principal es mostrar cómo dos servicios pueden funcionar de manera independiente y comunicarse entre sí cuando necesitan información de otro servicio.
+**StockFlow** es un sistema web orientado a la gestión de inventario y ventas para ferreterías. Permite llevar el control de productos, clientes, inventario y ventas.
 
-Los microservicios desarrollados son:
+Para esta actividad se separó una parte del sistema en dos microservicios utilizando **PHP y CodeIgniter 3**:
 
-* **Servicio A:** gestión de clientes.
-* **Servicio B:** gestión de ventas.
+- **Servicio A:** Gestión de clientes.
+- **Servicio B:** Gestión de ventas.
 
-El Servicio B consulta al Servicio A para verificar que el cliente exista antes de registrar una venta.
+Cada servicio tiene su propio código, configuración y base de datos. El Servicio B se comunica con el Servicio A para verificar que un cliente exista antes de registrar una venta.
 
----
-
-## 2. Tecnologías utilizadas
-
-Para el desarrollo del proyecto se utilizaron las siguientes tecnologías:
-
-* PHP 8.2
-* CodeIgniter 3
-* MySQL/MariaDB
-* XAMPP
-* Apache
-* Postman
-* cURL
-* JSON
+La comunicación se realiza mediante peticiones HTTP utilizando **cURL** y **JSON**.
 
 ---
 
-## 3. Organización del proyecto
+## Tecnologías utilizadas
 
-Los dos servicios se encuentran separados para mantener su independencia:
+- PHP
+- CodeIgniter 3
+- MySQL
+- XAMPP
+- Apache
+- cURL
+- JSON
+- Postman
+
+---
+
+## Estructura del proyecto
 
 ```text
-Actividad4_Microservicios/
+Actividad4_Yesid_Hernandez/
 │
-├── servicio-a-clientes/
-│
-├── servicio-b-ventas/
-│
-├── README.md
-│
-└── Postman/
+├── ServicioA/
+├── ServicioB/
+├── BaseDatos/
+│   ├── db_microservicio_clientes.sql
+│   └── db_microservicio_ventas.sql
+├── Postman/
+│   └── Actividad4_Microservicios.postman_collection.json
+└── README.md
 ```
-
-Cada servicio tiene sus propios archivos, controladores, modelos y configuración.
 
 ---
 
-## 4. Bases de datos
+## Bases de datos
 
-Cada microservicio utiliza una base de datos diferente, siguiendo el principio de **Database per Service**.
+Cada microservicio utiliza una base de datos independiente.
 
-Para el Servicio A se utiliza:
+### Servicio A - Clientes
+
+```text
+Base de datos: db_microservicio_clientes
+Archivo: BaseDatos/db_microservicio_clientes.sql
+```
+
+Esta base almacena la información de los clientes.
+
+### Servicio B - Ventas
+
+```text
+Base de datos: db_microservicio_ventas
+Archivo: BaseDatos/db_microservicio_ventas.sql
+```
+
+Esta base almacena la información de las ventas.
+
+No se comparte una misma base de datos entre los servicios. El Servicio B no consulta directamente las tablas del Servicio A, sino que utiliza su API para obtener la información necesaria.
+
+---
+
+## Instalación
+
+### 1. Iniciar XAMPP
+
+Iniciar los servicios:
+
+```text
+Apache
+MySQL
+```
+
+### 2. Crear las bases de datos
+
+Entrar a:
+
+```text
+http://localhost/phpmyadmin
+```
+
+Importar:
+
+```text
+BaseDatos/db_microservicio_clientes.sql
+```
+
+y:
+
+```text
+BaseDatos/db_microservicio_ventas.sql
+```
+
+Al finalizar deben existir:
 
 ```text
 db_microservicio_clientes
-```
-
-Esta base de datos contiene la información relacionada con los clientes.
-
-Para el Servicio B se utiliza:
-
-```text
 db_microservicio_ventas
 ```
 
-Esta base de datos contiene la información relacionada con las ventas.
+### 3. Configurar las conexiones
 
-Las dos bases de datos son independientes y no se comparten entre los servicios.
+El Servicio A debe conectarse a:
+
+```text
+Host: localhost
+Usuario: root
+Contraseña: 
+Base de datos: db_microservicio_clientes
+```
+
+El Servicio B debe conectarse a:
+
+```text
+Host: localhost
+Usuario: root
+Contraseña:
+Base de datos: db_microservicio_ventas
+```
+
+Si el usuario `root` tiene contraseña en MySQL, se debe colocar en la configuración correspondiente.
+
+### 4. Ubicación del proyecto
+
+Colocar la carpeta del proyecto dentro de:
+
+```text
+C:\xampp\htdocs\
+```
+
+Con Apache y MySQL activos, los servicios quedan disponibles desde `localhost`.
 
 ---
 
-## 5. Requisitos para ejecutar el proyecto
+## URLs
 
-Para ejecutar el proyecto localmente se necesita tener instalado:
+### Servicio A
 
-* XAMPP
-* PHP 8.2 o una versión compatible
-* MySQL o MariaDB
-* Postman
+```text
+http://localhost/Actividad4_Yesid_Hernandez/ServicioA/
+```
 
-También es necesario que la extensión cURL de PHP esté habilitada, ya que se utiliza para la comunicación entre el Servicio B y el Servicio A.
+### Servicio B
+
+```text
+http://localhost/Actividad4_Yesid_Hernandez/ServicioB/
+```
+
+La ruta depende del nombre de la carpeta utilizada dentro de `htdocs`.
 
 ---
 
-## 6. Instalación
+# Servicio A - Clientes
 
-Primero se debe copiar la carpeta del proyecto dentro de la carpeta `htdocs` de XAMPP:
+El Servicio A se encarga de administrar los clientes.
 
-```text
-C:\xampp\htdocs\Actividad4_Microservicios
+## Endpoints
+
+```http
+GET     /clientes
+GET     /clientes/{id}
+POST    /clientes
+PUT     /clientes/{id}
+DELETE  /clientes/{id}
 ```
 
-Después se deben iniciar desde XAMPP los servicios de:
+### Crear cliente
 
-* Apache
-* MySQL
-
-En phpMyAdmin se deben crear las siguientes bases de datos:
-
-```text
-db_microservicio_clientes
-db_microservicio_ventas
+```http
+POST /clientes
 ```
 
-Luego se deben importar las tablas correspondientes a cada servicio.
+Ejemplo:
 
----
-
-## 7. Servicio A - Clientes
-
-El Servicio A se encarga de realizar las operaciones relacionadas con los clientes.
-
-URL base:
-
-```text
-http://localhost/Actividad4_Microservicios/servicio-a-clientes/
-```
-
-Endpoint principal:
-
-```text
-http://localhost/Actividad4_Microservicios/servicio-a-clientes/index.php/api/clientes
-```
-
-### Operaciones disponibles
-
-**Crear cliente**
-
-```text
-POST /api/clientes
-```
-
-**Consultar todos los clientes**
-
-```text
-GET /api/clientes
-```
-
-**Consultar un cliente**
-
-```text
-GET /api/clientes/{id}
-```
-
-**Actualizar un cliente**
-
-```text
-PUT /api/clientes/{id}
-```
-
-**Eliminar un cliente**
-
-```text
-DELETE /api/clientes/{id}
+```json
+{
+    "nombre": "Pedro Martinez",
+    "correo": "pedro@gmail.com",
+    "telefono": "3001112233",
+    "direccion": "Apartado"
+}
 ```
 
 ---
 
-## 8. Servicio B - Ventas
+# Servicio B - Ventas
 
-El Servicio B se encarga de registrar y administrar las ventas.
+El Servicio B se encarga de administrar las ventas.
 
-URL base:
+## Endpoints
 
-```text
-http://localhost/Actividad4_Microservicios/servicio-b-ventas/
+```http
+GET     /ventas
+GET     /ventas/{id}
+POST    /ventas/guardar
+PUT     /ventas/{id}
+DELETE  /ventas/{id}
 ```
 
-Endpoint principal:
+### Registrar venta
 
-```text
-http://localhost/Actividad4_Microservicios/servicio-b-ventas/index.php/api/ventas
+```http
+POST /ventas/guardar
 ```
 
-### Operaciones disponibles
+Ejemplo:
 
-**Crear venta**
-
-```text
-POST /api/ventas
-```
-
-**Consultar todas las ventas**
-
-```text
-GET /api/ventas
-```
-
-**Consultar una venta**
-
-```text
-GET /api/ventas/{id}
-```
-
-**Actualizar una venta**
-
-```text
-PUT /api/ventas/{id}
-```
-
-**Eliminar una venta**
-
-```text
-DELETE /api/ventas/{id}
+```json
+{
+    "id_cliente": 2,
+    "total": 150000
+}
 ```
 
 ---
 
-## 9. Comunicación entre los servicios
+# Comunicación entre los servicios
 
-La comunicación se realiza desde el Servicio B hacia el Servicio A mediante una petición HTTP.
+Antes de registrar una venta, el Servicio B consulta al Servicio A para comprobar que el cliente exista.
 
-Cuando se intenta crear una venta, el Servicio B primero consulta al Servicio A utilizando el ID del cliente.
-
-Por ejemplo:
+El proceso es:
 
 ```text
 Servicio B
-    ↓
-Consulta al Servicio A
-    ↓
-¿Existe el cliente?
-    ↓
- ┌───────────────┐
- │               │
-Sí              No
- │               │
- ↓               ↓
-Crear venta    Rechazar venta
+    |
+    | HTTP + cURL
+    v
+Servicio A
+    |
+    v
+Base de datos de clientes
 ```
 
-Esto permite evitar que se registre una venta con un cliente que no existe.
+Si el cliente existe, el Servicio B continúa y registra la venta.
 
----
+Si el cliente no existe, la venta es rechazada.
 
-## 10. Validación de clientes
+### Cliente existente
 
-Cuando se registra una venta con un cliente existente, el Servicio B permite continuar con la operación.
+```json
+{
+    "id_cliente": 2,
+    "total": 150000
+}
+```
 
-En las pruebas realizadas, utilizando el cliente con `id_cliente = 2`, la venta fue creada correctamente.
+Resultado:
 
-Cuando se utilizó un cliente inexistente, por ejemplo `id_cliente = 9999`, el Servicio B respondió:
+```json
+{
+    "ok": true,
+    "mensaje": "Venta registrada correctamente."
+}
+```
+
+### Cliente inexistente
+
+```json
+{
+    "id_cliente": 9999,
+    "total": 150000
+}
+```
+
+Resultado:
 
 ```json
 {
@@ -251,87 +283,111 @@ Cuando se utilizó un cliente inexistente, por ejemplo `id_cliente = 9999`, el S
 }
 ```
 
-De esta forma se comprueba que el Servicio B está validando la información del Servicio A antes de registrar una venta.
-
 ---
 
-## 11. Manejo de errores y resiliencia
+# Manejo de errores
 
-También se implementó un manejo básico de errores para cuando el Servicio A no se encuentre disponible.
+Se implementó un manejo básico de errores para controlar problemas durante la comunicación entre los servicios.
 
-Para la comunicación mediante cURL se configuró un tiempo máximo de conexión de 2 segundos y un tiempo máximo de espera de 5 segundos.
+La petición mediante cURL utiliza tiempos de espera:
 
 ```php
-curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 2);
-curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 ```
 
-Si el Servicio A no responde, el Servicio B no registra la venta y devuelve una respuesta controlada:
+Si el Servicio A no responde, el Servicio B controla la situación y no registra la venta.
+
+Ejemplo:
 
 ```json
 {
     "ok": false,
-    "mensaje": "El Servicio A no está disponible. No se puede validar el cliente."
+    "mensaje": "No se pudo comunicar con el Servicio A."
 }
 ```
 
-La respuesta utiliza el código HTTP:
+---
+
+# Pruebas con Postman
+
+La colección utilizada para las pruebas se encuentra en:
 
 ```text
-503 Service Unavailable
+Postman/Actividad4_Microservicios.postman_collection.json
 ```
 
-Esto permite manejar de una mejor manera la caída o indisponibilidad del servicio dependiente.
+Para probar el proyecto:
+
+1. Iniciar Apache y MySQL.
+2. Verificar que las dos bases de datos estén creadas.
+3. Abrir Postman.
+4. Importar la colección.
+5. Ejecutar las peticiones del Servicio A y Servicio B.
+
+Se deben comprobar principalmente los siguientes casos:
+
+### 1. Cliente existente
+
+Crear o utilizar un cliente existente y registrar una venta con su `id_cliente`.
+
+La venta debe registrarse correctamente.
+
+### 2. Cliente inexistente
+
+Enviar una venta utilizando un `id_cliente` que no exista.
+
+La venta debe ser rechazada y mostrar:
+
+```json
+{
+    "ok": false,
+    "mensaje": "El cliente no existe en el Servicio A."
+}
+```
+
+### 3. Servicio A no disponible
+
+Detener temporalmente el Servicio A e intentar registrar una venta desde el Servicio B.
+
+El Servicio B debe controlar el error y evitar registrar la venta.
 
 ---
 
-## 12. Pruebas realizadas
+# Configuración
 
-Las pruebas principales se realizaron utilizando Postman.
-
-En el Servicio B se probaron las siguientes operaciones:
-
-* Crear una venta.
-* Consultar todas las ventas.
-* Consultar una venta específica.
-* Actualizar una venta.
-* Comprobar que la actualización se realizó.
-* Eliminar una venta.
-* Comprobar que la venta fue eliminada.
-
-También se realizaron pruebas de comunicación entre los servicios:
-
-1. Se registró una venta utilizando un cliente existente.
-2. Se intentó registrar una venta utilizando un cliente inexistente.
-3. Se simuló la indisponibilidad del Servicio A.
-4. Se comprobó que el Servicio B respondiera con un error controlado.
-
----
-
-## 13. Colección de Postman
-
-Se incluye una colección de Postman para realizar las pruebas de los dos microservicios.
-
-La colección contiene las peticiones necesarias para comprobar:
-
-* CRUD del Servicio A.
-* CRUD del Servicio B.
-* Comunicación entre ambos servicios.
-* Validación de clientes.
-* Manejo de errores cuando el Servicio A no está disponible.
-
-El archivo se encuentra en la carpeta:
+### Servicio A
 
 ```text
-Postman/
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=db_microservicio_clientes
+```
+
+### Servicio B
+
+```text
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=db_microservicio_ventas
+```
+
+El Servicio B también utiliza la URL del Servicio A para realizar la validación del cliente.
+
+```text
+SERVICIO_A_URL=http://localhost/Actividad4_Yesid_Hernandez/ServicioA
 ```
 
 ---
 
-## 14. Conclusión
+# Resultado
 
-Con el desarrollo de esta actividad se implementaron dos microservicios independientes utilizando CodeIgniter 3.
+Se implementaron dos microservicios independientes, cada uno con su propia base de datos y sus respectivos endpoints.
 
-Cada servicio tiene su propia base de datos y se puede ejecutar de manera independiente. Además, se logró establecer una comunicación entre el Servicio B y el Servicio A para validar los clientes antes de registrar las ventas.
+El Servicio B se comunica con el Servicio A mediante HTTP y cURL para validar los clientes antes de registrar una venta.
 
-Finalmente, se agregó un timeout y un manejo de errores para controlar la situación en la que el Servicio A no esté disponible. Las diferentes pruebas realizadas en Postman permitieron comprobar el funcionamiento de los servicios y la comunicación entre ellos.
+También se implementó manejo de errores cuando el cliente no existe o cuando el Servicio A no está disponible.
+
+Las operaciones y la comunicación entre los servicios se pueden comprobar mediante la colección de Postman incluida en el proyecto.
